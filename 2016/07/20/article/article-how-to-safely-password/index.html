@@ -1,0 +1,654 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/blog/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/blog/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/blog/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Article,Security," />
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="長頸鹿程語" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Introduction由於讀了 How To Safely Store A Password 裡面提到了密碼要用「BCrypt」編碼，其中也提到了傳統的 MD5 編碼在每秒可以 try 7 億次的超級電腦中，只需要 1 秒就可以破解，文中也提到就算在密碼中加 Salt 也擋不了字典及暴力破解。
+但 BCrypt 編碼依然無法防護 Rainbow Table 的攻擊，但可以設定 work fact">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Article－如何保護密碼安全">
+<meta property="og:url" content="http://lonka.github.io/blog/2016/07/20/article/article-how-to-safely-password/index.html">
+<meta property="og:site_name" content="長頸鹿程語">
+<meta property="og:description" content="Introduction由於讀了 How To Safely Store A Password 裡面提到了密碼要用「BCrypt」編碼，其中也提到了傳統的 MD5 編碼在每秒可以 try 7 億次的超級電腦中，只需要 1 秒就可以破解，文中也提到就算在密碼中加 Salt 也擋不了字典及暴力破解。
+但 BCrypt 編碼依然無法防護 Rainbow Table 的攻擊，但可以設定 work fact">
+<meta property="og:updated_time" content="2016-08-01T03:57:34.139Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Article－如何保護密碼安全">
+<meta name="twitter:description" content="Introduction由於讀了 How To Safely Store A Password 裡面提到了密碼要用「BCrypt」編碼，其中也提到了傳統的 MD5 編碼在每秒可以 try 7 億次的超級電腦中，只需要 1 秒就可以破解，文中也提到就算在密碼中加 Salt 也擋不了字典及暴力破解。
+但 BCrypt 編碼依然無法防護 Rainbow Table 的攻擊，但可以設定 work fact">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Article－如何保護密碼安全 | 長頸鹿程語 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-hk">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/blog/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">長頸鹿程語</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Article－如何保護密碼安全
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2016-07-20T11:47:02+08:00" content="2016-07-20">
+              2016-07-20
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/blog/categories/Article/" itemprop="url" rel="index">
+                    <span itemprop="name">Article</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/blog/2016/07/20/article/article-how-to-safely-password/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/07/20/article/article-how-to-safely-password/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>由於讀了 <a href="https://codahale.com/how-to-safely-store-a-password/" target="_blank" rel="external">How To Safely Store A Password</a> 裡面提到了密碼要用「BCrypt」編碼，其中也提到了傳統的 MD5 編碼在每秒可以 try 7 億次的超級電腦中，只需要 1 秒就可以破解，文中也提到就算在密碼中加 Salt 也擋不了字典及暴力破解。</p>
+<p>但 BCrypt 編碼依然無法防護 Rainbow Table 的攻擊，但可以設定 work factor 來決定產出的 Hash 有多複雜。文中指出租用 Amazon 每小時 3 美元的電腦就可以利用 Rainbow Table 達到每秒 10 億次的攻擊，更別提每小時 300 美的電腦可以達到每秒 5 兆次的攻擊。</p>
+<h2 id="各種加密測試"><a href="#各種加密測試" class="headerlink" title="各種加密測試"></a>各種加密測試</h2><p>針對<code>Abc123$%^</code>字串透過以下的幾種方法進行加密</p>
+<h3 id="MD5"><a href="#MD5" class="headerlink" title="MD5"></a>MD5</h3><p>using<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">System.Text;</span><br><span class="line">System.Security.Cryptography;</span><br></pre></td></tr></table></figure></p>
+<p>code<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">string</span> password = Abc123$%^;</span><br><span class="line">MD5 md5 = MD5.Create();</span><br><span class="line"><span class="keyword">byte</span>[] source = Encoding.Default.GetBytes(password);</span><br><span class="line"><span class="keyword">byte</span>[] hash = md5.ComputeHash(source);</span><br><span class="line"><span class="keyword">string</span> result = Convert.ToBase64String(hash);</span><br></pre></td></tr></table></figure></p>
+<p>result<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">8d+TCDI/oqfM+x1yjuWZDQ==</span><br></pre></td></tr></table></figure></p>
+<h3 id="SHA-1"><a href="#SHA-1" class="headerlink" title="SHA-1"></a>SHA-1</h3><p>using<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">System.Text;</span><br><span class="line">System.Security.Cryptography;</span><br></pre></td></tr></table></figure></p>
+<p>code<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">string</span> password = Abc123$%^;</span><br><span class="line">SHA1 sha1 = <span class="keyword">new</span> SHA1CryptoServiceProvider();</span><br><span class="line"><span class="keyword">byte</span>[] source = Encoding.Default.GetBytes(password);</span><br><span class="line"><span class="keyword">byte</span>[] hash = sha1.ComputeHash(source);</span><br><span class="line"><span class="keyword">string</span> result = Convert.ToBase64String(hash);</span><br></pre></td></tr></table></figure></p>
+<p>result<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HqzzMRuJt2PQEwTUsL2sBazEv64=</span><br></pre></td></tr></table></figure></p>
+<h3 id="SHA-256"><a href="#SHA-256" class="headerlink" title="SHA-256"></a>SHA-256</h3><p>using<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">System.Text;</span><br><span class="line">System.Security.Cryptography;</span><br></pre></td></tr></table></figure></p>
+<p>code<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">string</span> password = Abc123$%^;</span><br><span class="line">SHA256 sha256 = <span class="keyword">new</span> SHA256CryptoServiceProvider();</span><br><span class="line"><span class="keyword">byte</span>[] source = Encoding.Default.GetBytes(password);</span><br><span class="line"><span class="keyword">byte</span>[] hash = sha256.ComputeHash(source);</span><br><span class="line"><span class="keyword">string</span> result = Convert.ToBase64String(hash);</span><br></pre></td></tr></table></figure></p>
+<p>result<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c8iJUy8hEiLbx/xVe0pi9nL8GauRxk2PcBGXORH8Nu4=</span><br></pre></td></tr></table></figure></p>
+<h3 id="SHA-384"><a href="#SHA-384" class="headerlink" title="SHA-384"></a>SHA-384</h3><p>using<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">System.Text;</span><br><span class="line">System.Security.Cryptography;</span><br></pre></td></tr></table></figure></p>
+<p>code<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">string</span> password = Abc123$%^;</span><br><span class="line">SHA384 sha384 = <span class="keyword">new</span> SHA384CryptoServiceProvider();</span><br><span class="line"><span class="keyword">byte</span>[] source = Encoding.Default.GetBytes(password);</span><br><span class="line"><span class="keyword">byte</span>[] hash = sha384.ComputeHash(source);</span><br><span class="line"><span class="keyword">string</span> result = Convert.ToBase64String(hash);</span><br></pre></td></tr></table></figure></p>
+<p>result<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3+TG7CHArX+PRFuD42oR1z4pVRPSkNHDtphZEIVR4gvQYv6usTlOl1JyK59Wovyc</span><br></pre></td></tr></table></figure></p>
+<h3 id="SHA-512"><a href="#SHA-512" class="headerlink" title="SHA-512"></a>SHA-512</h3><p>using<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">System.Text;</span><br><span class="line">System.Security.Cryptography;</span><br></pre></td></tr></table></figure></p>
+<p>code<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">string</span> password = Abc123$%^;</span><br><span class="line">SHA512 sha512 = <span class="keyword">new</span> SHA512CryptoServiceProvider();</span><br><span class="line"><span class="keyword">byte</span>[] source = Encoding.Default.GetBytes(password);</span><br><span class="line"><span class="keyword">byte</span>[] hash = sha512.ComputeHash(source);</span><br><span class="line"><span class="keyword">string</span> result = Convert.ToBase64String(hash);</span><br></pre></td></tr></table></figure></p>
+<p>result<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HMuz/qwowScZ2cApa8w5a5wxQ7JuixwzgrjYg4NUAZOHEnnsta6EWdVhG3aJRupuisL5BfXLR5yaC07rLm9Thg==</span><br></pre></td></tr></table></figure></p>
+<h3 id="BCrypt"><a href="#BCrypt" class="headerlink" title="BCrypt"></a>BCrypt</h3><p>透過NuGet下載「BCrypt.Net」<br>code<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">string</span> password = Abc123$%^;</span><br><span class="line"><span class="keyword">int</span> workFactor = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">string</span> result = BCrypt.Net.BCrypt.HashPassword(password, workFactor);</span><br></pre></td></tr></table></figure></p>
+<p>result<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$2a$05$N80gQsBIq7Y1Dh1co/BzT.y0lq1m18gWA6NZhKTXuGKArDnAVo5.6</span><br></pre></td></tr></table></figure></p>
+<h2 id="Source-Code"><a href="#Source-Code" class="headerlink" title="Source Code"></a>Source Code</h2><p><a href="https://github.com/Lonka/BD_160720_Security" target="_blank" rel="external">Download</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><blockquote>
+<p><a href="https://codahale.com/how-to-safely-store-a-password/" target="_blank" rel="external">How To Safely Store A Password</a><br><a href="https://sites.google.com/site/stevenattw/others/wang-zhan-mi-ma---hash-salt" target="_blank" rel="external">網站密碼 - hash + salt</a><br><a href="http://ju.outofmemory.cn/entry/62787" target="_blank" rel="external">如何生成安全的密码 Hash：MD5, SHA, PBKDF2, BCrypt 示例</a><br><a href="https://zh.wikipedia.org/wiki/%E5%BD%A9%E8%99%B9%E8%A1%A8" target="_blank" rel="external">彩虹表</a><br><a href="http://www.ha97.com/4009.html" target="_blank" rel="external">密码破解之王：Ophcrack彩虹表(Rainbow Tables)原理详解（附：120G彩虹表下载）</a><br><a href="https://dotblogs.com.tw/mrsunboss/2013/04/07/99955" target="_blank" rel="external">使用MD5、SHA-1、SHA-2(SHA-256、SHA-384、SHA-512) 加密資料</a><br><a href="http://bcrypt.codeplex.com/" target="_blank" rel="external">BCrypt.Net</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Article/" rel="tag">#Article</a>
+          
+            <a href="/blog/tags/Security/" rel="tag">#Security</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2016/07/05/hexo/hexo-delete-post/" rel="next" title="Hexo－刪除文章">
+                <i class="fa fa-chevron-left"></i> Hexo－刪除文章
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2016/07/28/wpf/wpf-stock-monitor/" rel="prev" title="WPF－股票監看">
+                WPF－股票監看 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/blog/uploads/avatar.jpg"
+               alt="Lonka" />
+          <p class="site-author-name" itemprop="name">Lonka</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/blog/archives">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#各種加密測試"><span class="nav-number">2.</span> <span class="nav-text">各種加密測試</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MD5"><span class="nav-number">2.1.</span> <span class="nav-text">MD5</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SHA-1"><span class="nav-number">2.2.</span> <span class="nav-text">SHA-1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SHA-256"><span class="nav-number">2.3.</span> <span class="nav-text">SHA-256</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SHA-384"><span class="nav-number">2.4.</span> <span class="nav-text">SHA-384</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SHA-512"><span class="nav-number">2.5.</span> <span class="nav-text">SHA-512</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BCrypt"><span class="nav-number">2.6.</span> <span class="nav-text">BCrypt</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Source-Code"><span class="nav-number">3.</span> <span class="nav-text">Source Code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">4.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lonka</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'lonkaliu';
+      var disqus_identifier = '2016/07/20/article/article-how-to-safely-password/';
+      var disqus_title = 'Article－如何保護密碼安全';
+      var disqus_url = 'http://lonka.github.io/blog/blog/2016/07/20/article/article-how-to-safely-password/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

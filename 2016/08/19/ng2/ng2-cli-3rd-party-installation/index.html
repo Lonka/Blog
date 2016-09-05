@@ -1,0 +1,794 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/blog/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/blog/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/blog/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Angular2,Angular CLI," />
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="長頸鹿程語" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Introduction原本以為用 Angular2 CLI 建出來的專案加第三方套件也只是用 npm install 後直接於 node_modules 中使用，可是跑起來後一直說找不到 node_modules 資料夾，後來找半天才發現原來專案（angular-cli-build.js）內就有連結教怎麼加入第三方套件
+Development加入 moment.jsmoment.js是一個Jav">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Angular2－加入第三方套件（Angular CLI）">
+<meta property="og:url" content="http://lonka.github.io/blog/2016/08/19/ng2/ng2-cli-3rd-party-installation/index.html">
+<meta property="og:site_name" content="長頸鹿程語">
+<meta property="og:description" content="Introduction原本以為用 Angular2 CLI 建出來的專案加第三方套件也只是用 npm install 後直接於 node_modules 中使用，可是跑起來後一直說找不到 node_modules 資料夾，後來找半天才發現原來專案（angular-cli-build.js）內就有連結教怎麼加入第三方套件
+Development加入 moment.jsmoment.js是一個Jav">
+<meta property="og:image" content="http://lonka.github.io/blog/blog/uploads/ng2-cli-3rd-party-installation/1.jpg">
+<meta property="og:image" content="http://lonka.github.io/blog/blog/uploads/ng2-cli-3rd-party-installation/5.jpg">
+<meta property="og:image" content="http://lonka.github.io/blog/blog/uploads/ng2-cli-3rd-party-installation/2.jpg">
+<meta property="og:image" content="http://lonka.github.io/blog/blog/uploads/ng2-cli-3rd-party-installation/3.jpg">
+<meta property="og:image" content="http://lonka.github.io/blog/blog/uploads/ng2-cli-3rd-party-installation/4.jpg">
+<meta property="og:image" content="http://lonka.github.io/blog/blog/uploads/ng2-cli-3rd-party-installation/6.jpg">
+<meta property="og:updated_time" content="2016-09-01T08:23:21.255Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Angular2－加入第三方套件（Angular CLI）">
+<meta name="twitter:description" content="Introduction原本以為用 Angular2 CLI 建出來的專案加第三方套件也只是用 npm install 後直接於 node_modules 中使用，可是跑起來後一直說找不到 node_modules 資料夾，後來找半天才發現原來專案（angular-cli-build.js）內就有連結教怎麼加入第三方套件
+Development加入 moment.jsmoment.js是一個Jav">
+<meta name="twitter:image" content="http://lonka.github.io/blog/blog/uploads/ng2-cli-3rd-party-installation/1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Angular2－加入第三方套件（Angular CLI） | 長頸鹿程語 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-hk">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/blog/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">長頸鹿程語</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Angular2－加入第三方套件（Angular CLI）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2016-08-19T10:37:26+08:00" content="2016-08-19">
+              2016-08-19
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/blog/categories/Angular2/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular2</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/blog/2016/08/19/ng2/ng2-cli-3rd-party-installation/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/08/19/ng2/ng2-cli-3rd-party-installation/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>原本以為用 Angular2 CLI 建出來的專案加第三方套件也只是用 npm install 後直接於 node_modules 中使用，可是跑起來後一直說找不到 node_modules 資料夾，後來找半天才發現原來專案（angular-cli-build.js）內就有連結教怎麼加入第三方套件</p>
+<h2 id="Development"><a href="#Development" class="headerlink" title="Development"></a>Development</h2><h3 id="加入-moment-js"><a href="#加入-moment-js" class="headerlink" title="加入 moment.js"></a>加入 moment.js</h3><p>moment.js是一個JavaScript的日期處理類庫，用於解析，檢驗，操作，以及顯示日期。</p>
+<ol>
+<li><p>安裝 monent.js 通過 npm</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install moment --save</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>加入 moment.js 到<code><font color="#D5BA32"><strong>angular-cli-build.js</strong></font></code>的 vendorNpmFiles array</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Angular2App = <span class="built_in">require</span>(<span class="string">'angular-cli/lib/broccoli/angular2-app'</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">defaults</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> Angular2App(defaults, &#123;</span><br><span class="line">    vendorNpmFiles: [</span><br><span class="line">      <span class="comment">// ...</span></span><br><span class="line">      <span class="string">'moment/moment.js'</span></span><br><span class="line">    ]</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p> 並重新建置</p>
+ <figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng build</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>設定<code><font color="#0074C1"><strong>system-config.ts</strong></font></code> mappings 知道去那裡找到 moment.js</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** Map relative paths to URLs. */</span></span><br><span class="line"><span class="keyword">const</span> map: <span class="built_in">any</span> = &#123;</span><br><span class="line">  <span class="string">'moment'</span>: <span class="string">'vendor/moment/moment.js'</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** User packages configuration. */</span></span><br><span class="line"><span class="keyword">const</span> packages: <span class="built_in">any</span> = &#123;</span><br><span class="line">  <span class="string">'moment'</span>:&#123;</span><br><span class="line">    format: <span class="string">'cjs'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>匯入和使用在 *.ts</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> * as moment from <span class="string">'moment'</span>;</span><br><span class="line"></span><br><span class="line">moment().format(<span class="string">'LLLL'</span>);</span><br></pre></td></tr></table></figure>
+<p> <img src="/blog/uploads/ng2-cli-3rd-party-installation/1.jpg" alt=""></p>
+</li>
+</ol>
+<h3 id="加入-material2"><a href="#加入-material2" class="headerlink" title="加入 material2"></a>加入 material2</h3><p>Google Material Design 元件用於 Angular 2 App</p>
+<ol>
+<li><p>安裝 material2 core 通過 npm</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm install @angular2-material/core --save</span><br><span class="line"></span><br><span class="line">//RC4</span><br><span class="line">npm install @angular2-material/core@<span class="number">2</span>.<span class="number">0</span>.<span class="number">0</span>-alpha.<span class="number">6</span> --save</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安裝所需要的 meterial2 package</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm install @angular2-material/checkbox --save</span><br><span class="line"></span><br><span class="line">//RC4</span><br><span class="line">npm install @angular2-material/checkbox@<span class="number">2</span>.<span class="number">0</span>.<span class="number">0</span>-alpha.<span class="number">6</span> --save</span><br></pre></td></tr></table></figure>
+<p> 目前可用的 package 如下</p>
+<ul>
+<li>button</li>
+<li>card</li>
+<li>checkbox</li>
+<li>icon</li>
+<li>input</li>
+<li>list</li>
+<li>progress-bar</li>
+<li>progress-circle</li>
+<li>radio</li>
+<li>sidenav</li>
+<li>toolbar</li>
+</ul>
+</li>
+<li><p>加入 material2 到<code><font color="#D5BA32"><strong>angular-cli-build.js</strong></font></code>的 vendorNpmFiles array</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Angular2App = <span class="built_in">require</span>(<span class="string">'angular-cli/lib/broccoli/angular2-app'</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">defaults</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> Angular2App(defaults, &#123;</span><br><span class="line">    vendorNpmFiles: [</span><br><span class="line">      <span class="string">'@angular2-material/**/*.js'</span></span><br><span class="line">    ]</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p> 並重新建置</p>
+ <figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng build</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>設定<code><font color="#0074C1"><strong>system-config.ts</strong></font></code> mappings 知道去那裡找到 material.js</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** Map relative paths to URLs. */</span></span><br><span class="line"><span class="keyword">const</span> map: <span class="built_in">any</span> = &#123;</span><br><span class="line">  <span class="string">'@angular2-material'</span>: <span class="string">'vendor/@angular2-material'</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** User packages configuration. */</span></span><br><span class="line"><span class="keyword">const</span> packages: <span class="built_in">any</span> = &#123;</span><br><span class="line">  <span class="string">'@angular2-material/core'</span>: &#123;</span><br><span class="line">    format: <span class="string">'cjs'</span>,</span><br><span class="line">    defaultExtension: <span class="string">'js'</span>,</span><br><span class="line">    main: <span class="string">'core.js'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">'@angular2-material/checkbox'</span>: &#123;</span><br><span class="line">    format: <span class="string">'cjs'</span>,</span><br><span class="line">    defaultExtension: <span class="string">'js'</span>,</span><br><span class="line">    main: <span class="string">'checkbox.js'</span></span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>匯入和使用在 *.ts</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; from <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; MdCheckbox &#125; from <span class="string">'@angular2-material/checkbox'</span>;</span><br><span class="line"></span><br><span class="line">@Component(&#123;</span><br><span class="line">  selector: <span class="string">'my-app'</span>,</span><br><span class="line">  template: <span class="string">`&lt;md-checkbox&gt;&lt;/md-checkbox&gt;`</span>,</span><br><span class="line">  directives: [MdCheckbox]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppComponent &#123; &#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/blog/uploads/ng2-cli-3rd-party-installation/5.jpg" alt=""></p>
+</li>
+</ol>
+<h3 id="加入-Bootstrap"><a href="#加入-Bootstrap" class="headerlink" title="加入 Bootstrap"></a>加入 Bootstrap</h3><p>是最受歡迎的 HTML、CSS 和 JS 框架，用於開發自適應網頁與以行動優先的網站專案。</p>
+<ol>
+<li><p>加入 bootstrap styles 在<code><font color="#E44D26"><strong>index.html</strong></font></code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">href</span>=<span class="string">"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>先安裝 moment.js 之後再安裝 boostrap 通過 npm</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install ng2-bootstrap --save</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>加入 boostrap 到<code><font color="#D5BA32"><strong>angular-cli-build.js</strong></font></code>的 vendorNpmFiles array</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Angular2App = <span class="built_in">require</span>(<span class="string">'angular-cli/lib/broccoli/angular2-app'</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">defaults</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> Angular2App(defaults, &#123;</span><br><span class="line">    vendorNpmFiles: [</span><br><span class="line">      <span class="string">'ng2-bootstrap/**/*.js'</span>,</span><br><span class="line">    ]</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p> 並重新建置</p>
+ <figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng build</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>設定<code><font color="#0074C1"><strong>system-config.ts</strong></font></code> mappings 知道去那裡找到 bootstrap.js</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** Map relative paths to URLs. */</span></span><br><span class="line"><span class="keyword">const</span> map: <span class="built_in">any</span> = &#123;</span><br><span class="line">  <span class="string">'ng2-bootstrap'</span>: <span class="string">'vendor/ng2-bootstrap'</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** User packages configuration. */</span></span><br><span class="line"><span class="keyword">const</span> packages: <span class="built_in">any</span> = &#123;</span><br><span class="line">  <span class="string">'ng2-bootstrap'</span>: &#123;</span><br><span class="line">    format: <span class="string">'cjs'</span>,</span><br><span class="line">    defaultExtension: <span class="string">'js'</span>,</span><br><span class="line">    main: <span class="string">'ng2-bootstrap.js'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>匯入和使用在 *.ts</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; from <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; AlertComponent &#125; from <span class="string">'ng2-bootstrap/ng2-bootstrap'</span>;</span><br><span class="line"></span><br><span class="line">@Component(&#123;</span><br><span class="line">  selector: <span class="string">'my-app'</span>,</span><br><span class="line">  template: <span class="string">`&lt;alert type="info"&gt;ng2-bootstrap hello world!&lt;/alert&gt;`</span>,</span><br><span class="line">  directives: [AlertComponent],</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppComponent &#123; &#125;</span><br></pre></td></tr></table></figure>
+<p> <img src="/blog/uploads/ng2-cli-3rd-party-installation/2.jpg" alt=""></p>
+</li>
+</ol>
+<h3 id="加入-underscore-js"><a href="#加入-underscore-js" class="headerlink" title="加入 underscore.js"></a>加入 underscore.js</h3><p>是一個 JavaScript 工具庫，它提供了一整套函數式編程的實用功能，但是沒有擴展任何 JavaScript 內置對象。</p>
+<ol>
+<li><p>安裝 underscore 通過 npm</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install underscore --save</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安裝 typings 至 library</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">typings install dt~underscore --global --save</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>加入 underscore 到<code><font color="#D5BA32"><strong>angular-cli-build.js</strong></font></code>的 vendorNpmFiles array</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Angular2App = <span class="built_in">require</span>(<span class="string">'angular-cli/lib/broccoli/angular2-app'</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">defaults</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> Angular2App(defaults, &#123;</span><br><span class="line">    vendorNpmFiles: [</span><br><span class="line">      <span class="string">'underscore/underscore.js'</span></span><br><span class="line">    ]</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p> 並重新建置</p>
+ <figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng build</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>設定<code><font color="#0074C1"><strong>system-config.ts</strong></font></code> mappings 知道去那裡找到 underscore.js</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** Map relative paths to URLs. */</span></span><br><span class="line"><span class="keyword">const</span> map: <span class="built_in">any</span> = &#123;</span><br><span class="line">  <span class="string">'underscore'</span>: <span class="string">'vendor/underscore/underscore.js'</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** User packages configuration. */</span></span><br><span class="line"><span class="keyword">const</span> packages: <span class="built_in">any</span> = &#123;</span><br><span class="line">  <span class="string">'underscore'</span>:&#123;</span><br><span class="line">    format: <span class="string">'cjs'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>匯入和使用在 *.ts<br>以<code><font color="#0074C1"><strong>app.component.ts</strong></font></code>為例</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// &lt;reference path="../../../../../typings/globals/underscore/index.d.ts" /&gt;</span></span><br><span class="line"><span class="keyword">import</span> * as _ from <span class="string">'underscore'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppComponent &#123;</span><br><span class="line">  title = <span class="string">'app works!'</span>;</span><br><span class="line">  ngOnInit()&#123;</span><br><span class="line">     _.each([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], alert);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> <img src="/blog/uploads/ng2-cli-3rd-party-installation/3.jpg" alt=""></p>
+</li>
+</ol>
+<h3 id="加入-angular2-in-memory-web-api"><a href="#加入-angular2-in-memory-web-api" class="headerlink" title="加入 angular2-in-memory-web-api"></a>加入 angular2-in-memory-web-api</h3><p>可以讓開發人員不用寫後台，直接透過memory的方式，mock 出 WebApi。</p>
+<ol>
+<li><p>安裝 angular2-in-memory-web-api 通過 npm</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm install angular2-<span class="keyword">in</span>-memory-web-api --save</span><br><span class="line"></span><br><span class="line">//RC4</span><br><span class="line">npm install angular2-<span class="keyword">in</span>-memory-web-api@<span class="number">0</span>.<span class="number">0</span>.<span class="number">14</span> --save</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>加入 angular2-in-memory-web-api 到<code><font color="#D5BA32"><strong>angular-cli-build.js</strong></font></code>的 vendorNpmFiles array</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Angular2App = <span class="built_in">require</span>(<span class="string">'angular-cli/lib/broccoli/angular2-app'</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">defaults</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> Angular2App(defaults, &#123;</span><br><span class="line">    vendorNpmFiles: [</span><br><span class="line">      <span class="string">'angular2-in-memory-web-api/**/**/*.js'</span></span><br><span class="line">    ]</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p> 並重新建置</p>
+ <figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng build</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>設定<code><font color="#0074C1"><strong>system-config.ts</strong></font></code> mappings 知道去那裡找到 angular2-in-memory-web-api</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** Map relative paths to URLs. */</span></span><br><span class="line"><span class="keyword">const</span> map: <span class="built_in">any</span> = &#123;</span><br><span class="line">  <span class="string">'angular2-in-memory-web-api'</span>: <span class="string">'vendor/angular2-in-memory-web-api'</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** User packages configuration. */</span></span><br><span class="line"><span class="keyword">const</span> packages: <span class="built_in">any</span> = &#123;</span><br><span class="line">  <span class="string">'angular2-in-memory-web-api'</span>: &#123; </span><br><span class="line">    main: <span class="string">'index.js'</span>, </span><br><span class="line">    defaultExtension: <span class="string">'js'</span> </span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>加入 In Memory Data<br><code><font color="#0074C1"><strong>app/in-memory-data.service.ts</strong></font></code></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; InMemoryDbService &#125; from <span class="string">'angular2-in-memory-web-api'</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> InMemoryDataService <span class="keyword">implements</span> InMemoryDbService &#123;</span><br><span class="line">  createDb() &#123;</span><br><span class="line">    <span class="keyword">let</span> users = [</span><br><span class="line">      &#123;id: <span class="number">11</span>, name: <span class="string">'Mr. Nice'</span>&#125;,</span><br><span class="line">      &#123;id: <span class="number">12</span>, name: <span class="string">'Narco'</span>&#125;,</span><br><span class="line">      &#123;id: <span class="number">13</span>, name: <span class="string">'Bombasto'</span>&#125;,</span><br><span class="line">      &#123;id: <span class="number">14</span>, name: <span class="string">'Celeritas'</span>&#125;,</span><br><span class="line">      &#123;id: <span class="number">15</span>, name: <span class="string">'Magneta'</span>&#125;,</span><br><span class="line">      &#123;id: <span class="number">16</span>, name: <span class="string">'RubberMan'</span>&#125;,</span><br><span class="line">      &#123;id: <span class="number">17</span>, name: <span class="string">'Dynama'</span>&#125;,</span><br><span class="line">      &#123;id: <span class="number">18</span>, name: <span class="string">'Dr IQ'</span>&#125;,</span><br><span class="line">      &#123;id: <span class="number">19</span>, name: <span class="string">'Magma'</span>&#125;,</span><br><span class="line">      &#123;id: <span class="number">20</span>, name: <span class="string">'Tornado'</span>&#125;</span><br><span class="line">    ];</span><br><span class="line">    <span class="keyword">return</span> &#123;users&#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>設定 Provide<br>RC5 below this<br><code><font color="#0074C1"><strong>app.module.ts </strong></font></code></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; InMemoryWebApiModule &#125; from <span class="string">'angular2-in-memory-web-api'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; InMemoryDataService &#125;  from <span class="string">'./in-memory-data.service'</span>;</span><br><span class="line"></span><br><span class="line">@NgModule(&#123;</span><br><span class="line">    declarations: [</span><br><span class="line">        AppComponent,</span><br><span class="line">    ],</span><br><span class="line">    imports: [</span><br><span class="line">        InMemoryWebApiModule.forRoot(InMemoryDataService)</span><br><span class="line">    ],</span><br><span class="line">    bootstrap: [AppComponent],</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>RC4 below this<br><code><font color="#0074C1"><strong>main.ts </strong></font></code></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; HTTP_PROVIDERS,XHRBackend &#125; from <span class="string">'@angular/http'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; InMemoryBackendService,SEED_DATA &#125; from <span class="string">'angular2-in-memory-web-api'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; InMemoryDataService &#125;  from <span class="string">'./app/in-memory-data.service'</span>;</span><br><span class="line"></span><br><span class="line">bootstrap(AppComponent, [</span><br><span class="line">    ,HTTP_PROVIDERS</span><br><span class="line">    ,&#123; provide: XHRBackend, useClass: InMemoryBackendService &#125; <span class="comment">// in-mem server</span></span><br><span class="line">    ,&#123; provide: SEED_DATA, useClass: InMemoryDataService &#125;      <span class="comment">// in-mem server data</span></span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>透過 http observable 取得資料<br>也可以透過 http promise 取得，這裡使用 observable 當範例<br><code><font color="#0074C1"><strong>in-memory-data.component.ts</strong></font></code></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Observable &#125; from <span class="string">'rxjs'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Http &#125; from <span class="string">'@angular/http'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> User&#123;</span><br><span class="line">  id:<span class="built_in">number</span>;</span><br><span class="line">  name:<span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> InMemoryDataComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line"></span><br><span class="line">  users: User[];</span><br><span class="line">  <span class="keyword">constructor</span>(private http: Http) &#123; &#125;</span><br><span class="line"></span><br><span class="line">  ngOnInit() &#123;</span><br><span class="line">    <span class="keyword">this</span>.http.get(<span class="string">'./app/users'</span>).map(res =&gt; res.json().data as User[]).subscribe(users =&gt; <span class="keyword">this</span>.users = users);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code><font color="#E44D26"><strong>in-memory-data.component.html</strong></font></code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span> *<span class="attr">ngFor</span>=<span class="string">'let user of users'</span>&gt;</span></span><br><span class="line">    &#123;&#123;user.name&#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img src="/blog/uploads/ng2-cli-3rd-party-installation/4.jpg" alt=""></p>
+</li>
+</ol>
+<h3 id="加入-angular-router"><a href="#加入-angular-router" class="headerlink" title="加入 @angular/router"></a>加入 @angular/router</h3><ol>
+<li><p>安裝 @angular/router 通過 npm</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm install @angular/router --save</span><br><span class="line"></span><br><span class="line">//RC4</span><br><span class="line">npm install @angular/router@<span class="number">3</span>.<span class="number">0</span>.<span class="number">0</span>-beta.<span class="number">2</span> --save</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>加入 @angular/router 到<code><font color="#D5BA32"><strong>angular-cli-build.js</strong></font></code>的 vendorNpmFiles array（理論上應該已經有這一行）</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Angular2App = <span class="built_in">require</span>(<span class="string">'angular-cli/lib/broccoli/angular2-app'</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">defaults</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> Angular2App(defaults, &#123;</span><br><span class="line">    vendorNpmFiles: [</span><br><span class="line">      <span class="string">'@angular/**/*.+(js|js.map)'</span>,</span><br><span class="line">    ]</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p> 並重新建置</p>
+ <figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng build</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>設定<code><font color="#0074C1"><strong>system-config.ts</strong></font></code> mappings 知道去那裡找到 @angular/router</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> barrels: <span class="built_in">string</span>[] = [</span><br><span class="line">  <span class="comment">// Angular specific barrels.</span></span><br><span class="line">  <span class="string">'@angular/router'</span>,</span><br><span class="line">  ...</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>加入 Router 檔<br><code><font color="#0074C1"><strong>app.routing.ts</strong></font></code><br>RC5 below this</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Routes, RouterModule &#125; from <span class="string">'@angular/router'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; InMemoryDataComponent &#125; from <span class="string">'./in-memory-data'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Test3rdPartyComponent &#125; from <span class="string">'./test-3rd-party'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> appRoutes: Routes = [</span><br><span class="line">    &#123;path:<span class="string">'test_3rd'</span>,component:InMemoryDataComponent&#125;,</span><br><span class="line">    &#123;path:<span class="string">'in_memory'</span>,component:InMemoryDataComponent&#125;,</span><br><span class="line">    &#123;path:<span class="string">''</span>,redirectTo:<span class="string">'/in_memory'</span>,pathMatch:<span class="string">'full'</span>&#125;,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> appRoutingProviders: <span class="built_in">any</span>[] = [</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> Routing = RouterModule.forRoot(appRoutes);</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> RoutedComponents = [Page1Component, Page2Component];</span><br></pre></td></tr></table></figure>
+<p>RC4 below this</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; provideRouter,RouterConfig &#125;   from <span class="string">'@angular/router'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; InMemoryDataComponent &#125; from <span class="string">'./in-memory-data'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Test3rdPartyComponent &#125; from <span class="string">'./test-3rd-party'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> routes:RouterConfig=[</span><br><span class="line">    &#123;path:<span class="string">'test_3rd'</span>,component:InMemoryDataComponent&#125;,</span><br><span class="line">    &#123;path:<span class="string">'in_memory'</span>,component:InMemoryDataComponent&#125;,</span><br><span class="line">    &#123;path:<span class="string">''</span>,redirectTo:<span class="string">'/in_memory'</span>,pathMatch:<span class="string">'full'</span>&#125;,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> APP_ROUTER_PROVIDERS=[</span><br><span class="line">    provideRouter(routes)</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>設定 Provide<br>RC5 below this<br><code><font color="#0074C1"><strong>app.module.ts</strong></font></code></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; RoutedComponents,appRoutingProviders,Routing &#125; from <span class="string">'./app.routing'</span>;</span><br><span class="line"></span><br><span class="line">@NgModule(&#123;</span><br><span class="line">    declarations: [</span><br><span class="line">        RoutedComponents</span><br><span class="line">        ],</span><br><span class="line">    providers:[</span><br><span class="line">        appRoutingProviders,</span><br><span class="line">    ],</span><br><span class="line">    imports: [</span><br><span class="line">        Routing,</span><br><span class="line">    ],</span><br><span class="line">    bootstrap: [AppComponent],</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>RC4 below this<br><code><font color="#0074C1"><strong>main.ts </strong></font></code></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;APP_ROUTER_PROVIDERS&#125; from <span class="string">'./app/app.routing'</span>;</span><br><span class="line"></span><br><span class="line">bootstrap(AppComponent,[APP_ROUTER_PROVIDERS])</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>透過 Router-Outlet 呈現<br><code><font color="#0074C1"><strong>app.component.ts</strong></font></code></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; ROUTER_DIRECTIVES &#125; from <span class="string">'@angular/router'</span>;</span><br><span class="line"></span><br><span class="line">@Component(&#123;</span><br><span class="line">  ...</span><br><span class="line">  directives:[ROUTER_DIRECTIVES]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p><code><font color="#E44D26"><strong>app.component.html</strong></font></code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">nav</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">a</span> <span class="attr">routerLink</span>=<span class="string">"/in_memory"</span> <span class="attr">routerLinkActive</span>=<span class="string">"active"</span>&gt;</span>in_memory<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">a</span> <span class="attr">routerLink</span>=<span class="string">"/test_3rd"</span>&gt;</span>test_3rd<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">nav</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">hr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">router-outlet</span>&gt;</span><span class="tag">&lt;/<span class="name">router-outlet</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img src="/blog/uploads/ng2-cli-3rd-party-installation/6.jpg" alt=""></p>
+</li>
+</ol>
+<h2 id="Source-Code"><a href="#Source-Code" class="headerlink" title="Source Code"></a>Source Code</h2><p><a href="https://github.com/Lonka/bd_ng2_cli/tree/f0601ae3001caf6dd7b0e8401a4378daa52899cc" target="_blank" rel="external">RC4 Download</a><br><a href="https://github.com/Lonka/bd_ng2_cli/tree/3rd_party" target="_blank" rel="external">RC5 Download</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><blockquote>
+<p><a href="https://github.com/angular/angular-cli/wiki/3rd-party-libs" target="_blank" rel="external">3rd party libs</a><br><a href="http://momentjs.com/" target="_blank" rel="external">Moment.js</a><br><a href="https://github.com/angular/material2" target="_blank" rel="external">material GIT</a><br><a href="https://www.npmjs.com/~angular2-material" target="_blank" rel="external">material npm</a><br><a href="https://material.angular.io/" target="_blank" rel="external">Angular Material</a><br><a href="https://material2-app.firebaseapp.com/" target="_blank" rel="external">Material Component</a><br><a href="https://github.com/valor-software/ng2-bootstrap" target="_blank" rel="external">ng2-bootstrap GIT</a><br><a href="http://valor-software.com/ng2-bootstrap/#/" target="_blank" rel="external">ng2-bootstrap Demo</a><br><a href="http://www.bootcss.com/p/underscore/#each" target="_blank" rel="external">Underscore.js</a><br><a href="https://github.com/angular/in-memory-web-api/" target="_blank" rel="external">In Memory Web Api</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Angular2/" rel="tag">#Angular2</a>
+          
+            <a href="/blog/tags/Angular-CLI/" rel="tag">#Angular CLI</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2016/08/18/ng2/ng2-cli-quickstart/" rel="next" title="Angular2－快速建置（Angular CLI）">
+                <i class="fa fa-chevron-left"></i> Angular2－快速建置（Angular CLI）
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2016/08/29/ng2/ng2-component-relocation/" rel="prev" title="Angular2－Component 搬移">
+                Angular2－Component 搬移 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/blog/uploads/avatar.jpg"
+               alt="Lonka" />
+          <p class="site-author-name" itemprop="name">Lonka</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/blog/archives">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Development"><span class="nav-number">2.</span> <span class="nav-text">Development</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#加入-moment-js"><span class="nav-number">2.1.</span> <span class="nav-text">加入 moment.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加入-material2"><span class="nav-number">2.2.</span> <span class="nav-text">加入 material2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加入-Bootstrap"><span class="nav-number">2.3.</span> <span class="nav-text">加入 Bootstrap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加入-underscore-js"><span class="nav-number">2.4.</span> <span class="nav-text">加入 underscore.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加入-angular2-in-memory-web-api"><span class="nav-number">2.5.</span> <span class="nav-text">加入 angular2-in-memory-web-api</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加入-angular-router"><span class="nav-number">2.6.</span> <span class="nav-text">加入 @angular/router</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Source-Code"><span class="nav-number">3.</span> <span class="nav-text">Source Code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">4.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lonka</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'lonkaliu';
+      var disqus_identifier = '2016/08/19/ng2/ng2-cli-3rd-party-installation/';
+      var disqus_title = 'Angular2－加入第三方套件（Angular CLI）';
+      var disqus_url = 'http://lonka.github.io/blog/blog/2016/08/19/ng2/ng2-cli-3rd-party-installation/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

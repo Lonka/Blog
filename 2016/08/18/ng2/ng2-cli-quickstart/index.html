@@ -1,0 +1,649 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/blog/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/blog/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/blog/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Angular2,Angular CLI," />
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="長頸鹿程語" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="IntroductionAngular2 可以透過官網的 5 min quickstart 一步步跟著做很快就可以建出一個基本的 ng2 環境，不過看了保哥的介紹用 Angular CLI 來建置環境似乎比較有一置性。 
+Development移除 Node.js如果有要換 Node.js 版本時才需要先移除，移除後所有安裝的套件也會一併移掉1234del &quot;%USERPROFILE%\.npmr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Angular2－快速建置（Angular CLI）">
+<meta property="og:url" content="http://lonka.github.io/blog/2016/08/18/ng2/ng2-cli-quickstart/index.html">
+<meta property="og:site_name" content="長頸鹿程語">
+<meta property="og:description" content="IntroductionAngular2 可以透過官網的 5 min quickstart 一步步跟著做很快就可以建出一個基本的 ng2 環境，不過看了保哥的介紹用 Angular CLI 來建置環境似乎比較有一置性。 
+Development移除 Node.js如果有要換 Node.js 版本時才需要先移除，移除後所有安裝的套件也會一併移掉1234del &quot;%USERPROFILE%\.npmr">
+<meta property="og:image" content="http://lonka.github.io/blog/blog/uploads/ng2-cli-quickstart/1.jpg">
+<meta property="og:image" content="http://lonka.github.io/blog/blog/uploads/ng2-cli-quickstart/2.jpg">
+<meta property="og:updated_time" content="2016-08-19T06:26:47.216Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Angular2－快速建置（Angular CLI）">
+<meta name="twitter:description" content="IntroductionAngular2 可以透過官網的 5 min quickstart 一步步跟著做很快就可以建出一個基本的 ng2 環境，不過看了保哥的介紹用 Angular CLI 來建置環境似乎比較有一置性。 
+Development移除 Node.js如果有要換 Node.js 版本時才需要先移除，移除後所有安裝的套件也會一併移掉1234del &quot;%USERPROFILE%\.npmr">
+<meta name="twitter:image" content="http://lonka.github.io/blog/blog/uploads/ng2-cli-quickstart/1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Angular2－快速建置（Angular CLI） | 長頸鹿程語 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-hk">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/blog/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">長頸鹿程語</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Angular2－快速建置（Angular CLI）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2016-08-18T12:11:16+08:00" content="2016-08-18">
+              2016-08-18
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/blog/categories/Angular2/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular2</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/blog/2016/08/18/ng2/ng2-cli-quickstart/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/08/18/ng2/ng2-cli-quickstart/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Angular2 可以透過官網的 <a href="https://angular.io/docs/ts/latest/quickstart.html" target="_blank" rel="external">5 min quickstart</a> 一步步跟著做很快就可以建出一個基本的 ng2 環境，不過看了保哥的介紹用 Angular CLI 來建置環境似乎比較有一置性。 </p>
+<h2 id="Development"><a href="#Development" class="headerlink" title="Development"></a>Development</h2><h3 id="移除-Node-js"><a href="#移除-Node-js" class="headerlink" title="移除 Node.js"></a>移除 Node.js</h3><p>如果有要換 Node.js 版本時才需要先移除，移除後所有安裝的套件也會一併移掉<br><figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">del</span> "<span class="variable">%USERPROFILE%</span>\.npmrc"</span><br><span class="line"><span class="built_in">rmdir</span> /s/q "C:\Program Files\nodejs"</span><br><span class="line"><span class="built_in">rmdir</span> /s/q "<span class="variable">%APPDATA%</span>\npm"</span><br><span class="line"><span class="built_in">rmdir</span> /s/q "<span class="variable">%APPDATA%</span>\npm-cache"</span><br></pre></td></tr></table></figure></p>
+<h3 id="安裝-Node-js-基本套件"><a href="#安裝-Node-js-基本套件" class="headerlink" title="安裝 Node.js 基本套件"></a>安裝 Node.js 基本套件</h3><figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm install -g gulp yo webpack rimraf</span><br><span class="line">npm install -g typescript typings angular-cli</span><br><span class="line">npm install -g eslint tslint</span><br></pre></td></tr></table></figure>
+<h3 id="建置專案"><a href="#建置專案" class="headerlink" title="建置專案"></a>建置專案</h3><p>透過以下流程就可以建置出一個名為 project 的專案<br><figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ng new project</span><br><span class="line"><span class="built_in">cd</span> project</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure></p>
+<h3 id="開發伺服器"><a href="#開發伺服器" class="headerlink" title="開發伺服器"></a>開發伺服器</h3><p>透過以下命令可以啟動一個開發伺服器於 <a href="http://localhose:4200" target="_blank" rel="external">localhost:4200</a><br><figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng serve</span><br></pre></td></tr></table></figure></p>
+<p>剛開機跑會花一段時間在建置發行專案，等出現下圖即可以開始使用<br><img src="/blog/uploads/ng2-cli-quickstart/1.jpg" alt=""></p>
+<h3 id="加入-Component"><a href="#加入-Component" class="headerlink" title="加入 Component"></a>加入 Component</h3><p>透過以下命令可以直接在「\app\」下加入一個 Component 名為 header<br><figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng g component header</span><br></pre></td></tr></table></figure></p>
+<p>接著在<code><font color="#E44D26"><strong>app.component.html</strong></font></code>中加入<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">app-header</span>&gt;</span>Header Loading...<span class="tag">&lt;/<span class="name">app-header</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>並在<code><font color="#0074C1"><strong>app.component.ts</strong></font></code>中告訴該 Component app-header 是來自於那個 Component ，所以要先 import header 在 app<br><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; HeaderComponent&#125; from <span class="string">'./header/'</span></span><br></pre></td></tr></table></figure></p>
+<p>並在 @Component 中加入 HeaderComponent 至 directives<br><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@Component(&#123;</span><br><span class="line">  moduleId: <span class="keyword">module</span>.id,</span><br><span class="line">  selector: 'app-root',</span><br><span class="line">  templateUrl: 'app.component.html',</span><br><span class="line">  styleUrls: ['app.component.css'],</span><br><span class="line">→→directives:[HeaderComponent]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>接著就可以在頁面上看到 Header Component 的內容<br><img src="/blog/uploads/ng2-cli-quickstart/2.jpg" alt=""></p>
+<h3 id="發行專案"><a href="#發行專案" class="headerlink" title="發行專案"></a>發行專案</h3><p>透過以下命令可以將專案發行至 「\dist」 中<br><figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng build</span><br></pre></td></tr></table></figure></p>
+<h2 id="Source-Code"><a href="#Source-Code" class="headerlink" title="Source Code"></a>Source Code</h2><p><a href="https://github.com/Lonka/bd_ng2_cli/tree/quickstart" target="_blank" rel="external">Download</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><blockquote>
+<p><a href="https://angular.io/docs/ts/latest/quickstart.html" target="_blank" rel="external">5 min quickstart</a><br><a href="http://blog.miniasp.com/post/2016/07/26/Introduction-to-Angular-2.aspx" target="_blank" rel="external">前端工程的夢幻逸品：Angular 2 開發框架介紹</a><br><a href="https://github.com/doggy8088/TypeScript" target="_blank" rel="external">TypeScript Handbook</a><br><a href="https://angular.cn/" target="_blank" rel="external">Angular2 中文官網</a><br><a href="https://github.com/angular/angular-cli/blob/master/README.md" target="_blank" rel="external">Angular-CLI README</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Angular2/" rel="tag">#Angular2</a>
+          
+            <a href="/blog/tags/Angular-CLI/" rel="tag">#Angular CLI</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2016/08/01/article/article-read-list-201608/" rel="next" title="Article－閱讀清單（August 2016）">
+                <i class="fa fa-chevron-left"></i> Article－閱讀清單（August 2016）
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2016/08/19/ng2/ng2-cli-3rd-party-installation/" rel="prev" title="Angular2－加入第三方套件（Angular CLI）">
+                Angular2－加入第三方套件（Angular CLI） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/blog/uploads/avatar.jpg"
+               alt="Lonka" />
+          <p class="site-author-name" itemprop="name">Lonka</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/blog/archives">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Development"><span class="nav-number">2.</span> <span class="nav-text">Development</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#移除-Node-js"><span class="nav-number">2.1.</span> <span class="nav-text">移除 Node.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安裝-Node-js-基本套件"><span class="nav-number">2.2.</span> <span class="nav-text">安裝 Node.js 基本套件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#建置專案"><span class="nav-number">2.3.</span> <span class="nav-text">建置專案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#開發伺服器"><span class="nav-number">2.4.</span> <span class="nav-text">開發伺服器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加入-Component"><span class="nav-number">2.5.</span> <span class="nav-text">加入 Component</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#發行專案"><span class="nav-number">2.6.</span> <span class="nav-text">發行專案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Source-Code"><span class="nav-number">3.</span> <span class="nav-text">Source Code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">4.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lonka</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'lonkaliu';
+      var disqus_identifier = '2016/08/18/ng2/ng2-cli-quickstart/';
+      var disqus_title = 'Angular2－快速建置（Angular CLI）';
+      var disqus_url = 'http://lonka.github.io/blog/blog/2016/08/18/ng2/ng2-cli-quickstart/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

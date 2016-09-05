@@ -1,0 +1,674 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/blog/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/blog/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/blog/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="WPF," />
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="長頸鹿程語" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Introduction由於上班如果要看股票就只能透過網頁或很明顯的應用程式切來切去又怕被老闆看到，或著是一直盯看手機又不好意思開提醒的音效，所以就想說寫一個隱藏在畫面右下角可以即時更新股價的程式，可以不用一直切換畫面且半透明不易被發現又不會打擾到工作，當然以上需求都是我朋友提出來的，我只負責開發。
+Development定位於畫面右下角先在MainWindow.xaml中
+
+設定 Window">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WPF－股票監看">
+<meta property="og:url" content="http://lonka.github.io/blog/2016/07/28/wpf/wpf-stock-monitor/index.html">
+<meta property="og:site_name" content="長頸鹿程語">
+<meta property="og:description" content="Introduction由於上班如果要看股票就只能透過網頁或很明顯的應用程式切來切去又怕被老闆看到，或著是一直盯看手機又不好意思開提醒的音效，所以就想說寫一個隱藏在畫面右下角可以即時更新股價的程式，可以不用一直切換畫面且半透明不易被發現又不會打擾到工作，當然以上需求都是我朋友提出來的，我只負責開發。
+Development定位於畫面右下角先在MainWindow.xaml中
+
+設定 Window">
+<meta property="og:image" content="http://lonka.github.io/blog/blog/uploads/wpf-stock-monitor/1.jpg">
+<meta property="og:image" content="http://lonka.github.io/blog/blog/uploads/wpf-stock-monitor/2.jpg">
+<meta property="og:image" content="http://lonka.github.io/blog/blog/uploads/wpf-stock-monitor/3.jpg">
+<meta property="og:image" content="http://lonka.github.io/blog/blog/uploads/wpf-stock-monitor/4.jpg">
+<meta property="og:updated_time" content="2016-08-01T04:14:33.686Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="WPF－股票監看">
+<meta name="twitter:description" content="Introduction由於上班如果要看股票就只能透過網頁或很明顯的應用程式切來切去又怕被老闆看到，或著是一直盯看手機又不好意思開提醒的音效，所以就想說寫一個隱藏在畫面右下角可以即時更新股價的程式，可以不用一直切換畫面且半透明不易被發現又不會打擾到工作，當然以上需求都是我朋友提出來的，我只負責開發。
+Development定位於畫面右下角先在MainWindow.xaml中
+
+設定 Window">
+<meta name="twitter:image" content="http://lonka.github.io/blog/blog/uploads/wpf-stock-monitor/1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> WPF－股票監看 | 長頸鹿程語 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-hk">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/blog/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">長頸鹿程語</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                WPF－股票監看
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2016-07-28T13:43:24+08:00" content="2016-07-28">
+              2016-07-28
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/blog/categories/WPF/" itemprop="url" rel="index">
+                    <span itemprop="name">WPF</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/blog/2016/07/28/wpf/wpf-stock-monitor/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/07/28/wpf/wpf-stock-monitor/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>由於上班如果要看股票就只能透過網頁或很明顯的應用程式切來切去又怕被老闆看到，或著是一直盯看手機又不好意思開提醒的音效，所以就想說寫一個隱藏在畫面右下角可以即時更新股價的程式，可以不用一直切換畫面且半透明不易被發現又不會打擾到工作，當然以上需求都是我朋友提出來的，我只負責開發。</p>
+<h2 id="Development"><a href="#Development" class="headerlink" title="Development"></a>Development</h2><h3 id="定位於畫面右下角"><a href="#定位於畫面右下角" class="headerlink" title="定位於畫面右下角"></a>定位於畫面右下角</h3><p>先在<code><font color="#01ABF5"><strong>MainWindow.xaml</strong></font></code>中</p>
+<ol>
+<li>設定 Window 屬性讓視窗可以低調一點</li>
+<li>加入一個 Grid 用來放置股票編號跟成交價</li>
+<li>再於右上角加入一個 Image 用以關閉程式 </li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Window</span> <span class="attr">x:Class</span>=<span class="string">"Stock.MainWindow"</span></span><br><span class="line">        <span class="attr">xmlns</span>=<span class="string">"http://schemas.microsoft.com/winfx/2006/xaml/presentation"</span></span><br><span class="line">        <span class="attr">xmlns:x</span>=<span class="string">"http://schemas.microsoft.com/winfx/2006/xaml"</span></span><br><span class="line">        <span class="attr">Title</span>=<span class="string">"MainWindow"</span> <span class="attr">Loaded</span>=<span class="string">"Window_Loaded"</span></span><br><span class="line">        <span class="attr">Height</span>=<span class="string">"40"</span> <span class="attr">Width</span>=<span class="string">"70"</span> <span class="attr">WindowStyle</span>=<span class="string">"None"</span> <span class="attr">ShowInTaskbar</span>=<span class="string">"False"</span> </span><br><span class="line">        <span class="attr">ResizeMode</span>=<span class="string">"NoResize"</span> <span class="attr">Topmost</span>=<span class="string">"True"</span> <span class="attr">AllowsTransparency</span>=<span class="string">"True"</span></span><br><span class="line">        <span class="attr">Opacity</span>=<span class="string">"0.5"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Grid</span> <span class="attr">x:Name</span>=<span class="string">"gridStocks"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Grid.RowDefinitions</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">RowDefinition</span> <span class="attr">Height</span>=<span class="string">"2*"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">RowDefinition</span> <span class="attr">Height</span>=<span class="string">"3*"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">Grid.RowDefinitions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Image</span> <span class="attr">HorizontalAlignment</span>=<span class="string">"Right"</span> <span class="attr">Height</span>=<span class="string">"14"</span> <span class="attr">Cursor</span>=<span class="string">"Hand"</span> <span class="attr">Margin</span>=<span class="string">"0,2,2,0"</span></span><br><span class="line">               <span class="attr">VerticalAlignment</span>=<span class="string">"Top"</span> <span class="attr">Width</span>=<span class="string">"14"</span> <span class="attr">Source</span>=<span class="string">"close.png"</span> <span class="attr">MouseUp</span>=<span class="string">"Image_MouseUp"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Grid</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Window</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>接著在<code><font color="#368832"><strong>MainWindow.xaml.cs</strong></font></code>的 Window_Loaded 設定視窗的初始位置</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Window_Loaded</span>(<span class="params"><span class="keyword">object</span> sender, RoutedEventArgs e</span>)</span><br><span class="line"></span>&#123;</span><br><span class="line">    Rect workAreaRect = SystemParameters.WorkArea;</span><br><span class="line">    <span class="keyword">this</span>.Left = workAreaRect.Right - (<span class="number">60</span>  + <span class="number">10</span>) - <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">this</span>.Top = workAreaRect.Bottom - <span class="number">40</span> - <span class="number">2</span>;</span><br><span class="line">    </span><br><span class="line">    TextBlock txtCode = <span class="keyword">new</span> TextBlock();</span><br><span class="line">    txtCode.Text = <span class="string">"0050"</span>;</span><br><span class="line">    txtCode.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;</span><br><span class="line">    txtCode.TextAlignment = TextAlignment.Center;</span><br><span class="line">    txtCode.FontSize = <span class="number">10</span>;</span><br><span class="line">    txtCode.Width = <span class="number">50</span>;</span><br><span class="line">    txtCode.Height = <span class="number">14</span>;</span><br><span class="line">    txtCode.Name = <span class="string">"txtCode0050"</span>;</span><br><span class="line">    txtCode.Margin = <span class="keyword">new</span> Thickness(i * <span class="number">50</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    txtCode.SetValue(Grid.RowProperty, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    TextBlock txtPrice = <span class="keyword">new</span> TextBlock();</span><br><span class="line">    txtPrice.Text = <span class="string">"Wait.."</span>;</span><br><span class="line">    txtPrice.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;</span><br><span class="line">    txtPrice.TextAlignment = TextAlignment.Center;</span><br><span class="line">    txtPrice.FontSize = <span class="number">16</span>;</span><br><span class="line">    txtPrice.Width = <span class="number">50</span>;</span><br><span class="line">    txtPrice.Height = <span class="number">24</span>;</span><br><span class="line">    txtPrice.Name = <span class="string">"txtPrice0050"</span>;</span><br><span class="line">    txtPrice.Margin = <span class="keyword">new</span> Thickness(i * <span class="number">50</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    txtPrice.SetValue(Grid.RowProperty, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    gridStocks.Children.Add(txtCode);</span><br><span class="line">    gridStocks.Children.Add(txtPrice);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>設定好後執行程式應該在畫面右下角像下圖的結果<br><img src="/blog/uploads/wpf-stock-monitor/1.jpg" alt=""></p>
+<h3 id="即時於Yahoo-Stock抓成交值"><a href="#即時於Yahoo-Stock抓成交值" class="headerlink" title="即時於Yahoo Stock抓成交值"></a>即時於Yahoo Stock抓成交值</h3><p>利用 <a href="https://htmlagilitypack.codeplex.com/" target="_blank" rel="external">Html Agility Pack</a> 透過 XPath 去 parse 網站內容，配合 <a href="https://htmlagilitypack.codeplex.com/downloads/get/120936" target="_blank" rel="external">HAP Explorer</a> 找到網站中各節點 XPath 的寫法。</p>
+<p>先從管理 NuGet 中找到 「HtmlAgilityPack」 並安裝<br><img src="/blog/uploads/wpf-stock-monitor/2.jpg" alt=""></p>
+<p>建立一個<code><font color="#368832"><strong>StockHelper.cs</strong></font></code>並撰寫以下的 GetHtmlContent 取得 HtmlDocument 本體，先引用以下 namespace<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> HtmlAgilityPack;</span><br><span class="line"><span class="keyword">using</span> System.Net;</span><br><span class="line"><span class="keyword">using</span> System.Text;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> HtmlDocument <span class="title">GetHtmlContent</span>(<span class="params"><span class="keyword">string</span> url</span>)</span><br><span class="line"></span>&#123;</span><br><span class="line">    HtmlDocument content = <span class="keyword">new</span> HtmlDocument();</span><br><span class="line">    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);</span><br><span class="line">    WebProxy proxy = <span class="keyword">new</span> WebProxy();</span><br><span class="line">    proxy.UseDefaultCredentials = <span class="literal">true</span>;</span><br><span class="line">    request.Proxy = proxy;</span><br><span class="line">    request.Timeout = <span class="number">5000</span>;</span><br><span class="line">    <span class="keyword">using</span> (HttpWebResponse reponse = (HttpWebResponse)request.GetResponse())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">string</span> coder = ((HttpWebResponse)reponse).CharacterSet;</span><br><span class="line">        Stream streamReceive = reponse.GetResponseStream();</span><br><span class="line">        content.Load(streamReceive, Encoding.GetEncoding(coder));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> content;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>透過 GetQuotedMarketPrice 取得成交價<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">GetQuotedMarketPrice</span>(<span class="params"><span class="keyword">string</span> stockCode</span>)</span><br><span class="line"></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 使用預設編碼讀入 HTML </span></span><br><span class="line">    HtmlDocument doc = GetHtmlContent(<span class="string">"https://tw.stock.yahoo.com/q/q?s="</span> + stockCode);</span><br><span class="line">    <span class="comment">// 裝載第一層查詢結果 </span></span><br><span class="line">    HtmlDocument hdc = <span class="keyword">new</span> HtmlDocument();</span><br><span class="line">    <span class="comment">// XPath 來解讀它</span></span><br><span class="line">    hdc.LoadHtml(doc.DocumentNode.SelectSingleNode(<span class="string">"/html[1]/body[1]/center[1]/table[2]/tr[1]/td[1]/table[1]"</span>).InnerHtml);</span><br><span class="line">    <span class="comment">// 取得個股標頭 </span></span><br><span class="line">    HtmlNodeCollection htnode = hdc.DocumentNode.SelectNodes(<span class="string">"./tr[1]/th"</span>);</span><br><span class="line">    <span class="comment">// 取得個股數值 </span></span><br><span class="line">    <span class="keyword">string</span>[] txt = hdc.DocumentNode.SelectSingleNode(<span class="string">"./tr[2]"</span>).InnerText.Trim().Split(<span class="string">'\n'</span>);</span><br><span class="line">    doc = <span class="literal">null</span>;</span><br><span class="line">    hdc = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">double</span> result = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">double</span>.TryParse(txt[<span class="number">2</span>].Trim(),<span class="keyword">out</span> result))</span><br><span class="line">    &#123;</span><br><span class="line">        result = <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接著在<code><font color="#368832"><strong>MainWindow.xaml.cs</strong></font></code>中直接呼叫 StockHalper.GetQuotedMarketPrice(“0050”) 就可以取得成交價<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> quotedMarketPrice = StockHelper.GetQuotedMarketPrice(<span class="string">"0050"</span>);</span><br></pre></td></tr></table></figure></p>
+<p>並設定「txtPrice0050」的值就可以在畫面右下角看到該股及成交價<br><img src="/blog/uploads/wpf-stock-monitor/3.jpg" alt=""></p>
+<h3 id="設定多組"><a href="#設定多組" class="headerlink" title="設定多組"></a>設定多組</h3><p>利過 ini 檔達到多組設定的方式<br><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[Stock1]</span></span><br><span class="line"><span class="attr">Code</span>=<span class="number">0050</span></span><br><span class="line"><span class="section"></span><br><span class="line">[Stock2]</span></span><br><span class="line"><span class="attr">Code</span>=<span class="number">0056</span></span><br></pre></td></tr></table></figure></p>
+<p>建立一個<code><font color="#368832"><strong>IniHelper.cs</strong></font></code>並撰寫以下的 Code 來協助 ini 檔的讀寫<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">IniHelper</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">GetProfileBool</span>(<span class="params"><span class="keyword">string</span> iniFile, <span class="keyword">string</span> section, <span class="keyword">string</span> key, <span class="keyword">bool</span> defaultValue</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">string</span> <span class="keyword">value</span> = GetProfileString(iniFile, section, key, <span class="string">""</span>).Trim();</span><br><span class="line">        <span class="keyword">bool</span> result = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">value</span> == <span class="string">"1"</span> || <span class="keyword">string</span>.Compare(<span class="keyword">value</span>, <span class="string">"true"</span>, <span class="literal">true</span>) == <span class="number">0</span> || <span class="keyword">string</span>.Compare(<span class="keyword">value</span>, <span class="string">"on"</span>, <span class="literal">true</span>) == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            result = <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">else</span> <span class="title">if</span> (<span class="params"><span class="keyword">value</span> == <span class="string">"0"</span> || <span class="keyword">string</span>.Compare(<span class="keyword">value</span>, <span class="string">"false"</span>, <span class="literal">true</span></span>) </span>== <span class="number">0</span> || <span class="keyword">string</span>.Compare(<span class="keyword">value</span>, <span class="string">"off"</span>, <span class="literal">true</span>) == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            result = <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            result = defaultValue;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 取得Setting.ini的Enum資料</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="enumType"&gt;</span>要取回Enum的Type<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="section"&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="key"&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="defaultValue"&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">object</span> <span class="title">GetProfileEnum</span>(<span class="params">Type enumType, <span class="keyword">string</span> iniFile, <span class="keyword">string</span> section, <span class="keyword">string</span> key, <span class="keyword">string</span> defaultValue</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">object</span> result = <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">string</span> profileValue = GetProfileString(iniFile, section, key, defaultValue);</span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">        &#123;</span><br><span class="line">            result = Enum.Parse(enumType, profileValue);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span></span><br><span class="line">        &#123;</span><br><span class="line">            result = Enum.Parse(enumType, defaultValue);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 取得INI的Int資料</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="iniFile"&gt;</span>INI檔的Path<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="section"&gt;</span>INI檔的Section<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="key"&gt;</span>INI檔中Section的Key<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="defaultValue"&gt;</span>取不到值的預設值<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">GetProfileInt</span>(<span class="params"><span class="keyword">string</span> iniFile, <span class="keyword">string</span> section, <span class="keyword">string</span> key, <span class="keyword">int</span> defaultValue</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">string</span> <span class="keyword">value</span> = GetProfileString(iniFile, section, key, <span class="string">""</span>);</span><br><span class="line">        <span class="keyword">int</span> result = <span class="keyword">int</span>.MinValue;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">int</span>.TryParse(<span class="keyword">value</span>, <span class="keyword">out</span> result))</span><br><span class="line">        &#123;</span><br><span class="line">            result = defaultValue;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 取得INI的String資料</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="iniFile"&gt;</span>INI檔的Path<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="section"&gt;</span>INI檔的Section<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="key"&gt;</span>INI檔中Section的Key<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="defaultValue"&gt;</span>取不到值的預設值<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">string</span> <span class="title">GetProfileString</span>(<span class="params"><span class="keyword">string</span> iniFile, <span class="keyword">string</span> section, <span class="keyword">string</span> key, <span class="keyword">string</span> defaultValue</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        StringBuilder result = <span class="keyword">new</span> StringBuilder(<span class="number">512</span>);</span><br><span class="line">        GetPrivateProfileString(section, key, defaultValue, result, <span class="number">512</span>, iniFile);</span><br><span class="line">        <span class="keyword">return</span> (result.ToString());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">WriteProfileSection</span>(<span class="params"><span class="keyword">string</span> iniFile, <span class="keyword">string</span> section, <span class="keyword">string</span> <span class="keyword">value</span></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">bool</span> result = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (WritePrivateProfileSection(section, <span class="keyword">value</span>, iniFile) &gt; <span class="number">0</span>)</span><br><span class="line">            result = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">return</span> (result);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">WriteProfileString</span>(<span class="params"><span class="keyword">string</span> iniFile, <span class="keyword">string</span> section, <span class="keyword">string</span> key, <span class="keyword">string</span> <span class="keyword">value</span></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">bool</span> result = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (WritePrivateProfileString(section, key, <span class="keyword">value</span>, iniFile) &gt; <span class="number">0</span>)</span><br><span class="line">            result = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">return</span> (result);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [DllImport(<span class="string">"KERNEL32.DLL"</span>, EntryPoint = <span class="string">"GetPrivateProfileString"</span>)]</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">extern</span> <span class="keyword">int</span> <span class="title">GetPrivateProfileString</span>(<span class="params"><span class="keyword">string</span> appName,</span><br><span class="line">                                                                    <span class="keyword">string</span> keyName, <span class="keyword">string</span> defaultString,</span><br><span class="line">                                                                    StringBuilder returnedString, <span class="keyword">int</span> size,</span><br><span class="line">                                                                    <span class="keyword">string</span> fileName</span>)</span>;</span><br><span class="line"></span><br><span class="line">    [DllImport(<span class="string">"KERNEL32.DLL"</span>)]</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">extern</span> <span class="keyword">long</span> <span class="title">WritePrivateProfileSection</span>(<span class="params"><span class="keyword">string</span> section,</span><br><span class="line">                                                            <span class="keyword">string</span> <span class="keyword">value</span>,</span><br><span class="line">                                                            <span class="keyword">string</span> fileName</span>)</span>;</span><br><span class="line"></span><br><span class="line">    [DllImport(<span class="string">"KERNEL32.DLL"</span>)]</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">extern</span> <span class="keyword">long</span> <span class="title">WritePrivateProfileString</span>(<span class="params"><span class="keyword">string</span> section,</span><br><span class="line">                                                            <span class="keyword">string</span> key,</span><br><span class="line">                                                            <span class="keyword">string</span> <span class="keyword">value</span>,</span><br><span class="line">                                                            <span class="keyword">string</span> fileName</span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>建立一個<code><font color="#368832"><strong>StockItem.cs</strong></font></code>來專門承接 ini 的各 section 項目<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">StockItem</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">StockItem</span>(<span class="params"><span class="keyword">string</span> code</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        Code = code;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> Code &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>並在<code><font color="#368832"><strong>MainWindow.xaml.cs</strong></font></code>中撰寫以下方法來取得所有 ini 的內容並回傳一個 StockItem 的 List<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> List&lt;StockItem&gt; <span class="title">GetAllSections</span>(<span class="params"></span>)</span><br><span class="line"></span>&#123;</span><br><span class="line">    List&lt;StockItem&gt; stockItems = <span class="keyword">new</span> List&lt;StockItem&gt;();</span><br><span class="line">    List&lt;<span class="keyword">string</span>&gt; sectionNames = <span class="keyword">new</span> List&lt;<span class="keyword">string</span>&gt;();</span><br><span class="line">    <span class="keyword">string</span> fileName = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, <span class="string">"Setting.ini"</span>);</span><br><span class="line">    <span class="keyword">if</span> (!File.Exists(fileName))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> stockItems;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">using</span> (StreamReader sr = <span class="keyword">new</span> StreamReader(fileName, System.Text.Encoding.Default))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span> (!sr.EndOfStream)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">string</span> line = sr.ReadLine();</span><br><span class="line">            <span class="keyword">if</span> (line.StartsWith(<span class="string">"[Stock"</span>) &amp;&amp; line.EndsWith(<span class="string">"]"</span>))</span><br><span class="line">            &#123;</span><br><span class="line">                sectionNames.Add(line.Replace(<span class="string">"["</span>, <span class="keyword">string</span>.Empty).Replace(<span class="string">"]"</span>, <span class="keyword">string</span>.Empty));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">string</span> sectionName <span class="keyword">in</span> sectionNames)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">string</span> code = IniHelper.GetProfileString(fileName, sectionName, <span class="string">"Code"</span>, <span class="string">"0050"</span>);</span><br><span class="line">        StockItem stockItem = <span class="keyword">new</span> StockItem(code);</span><br><span class="line">        stockItems.Add(stockItem);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> stockItems;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接著就可以將<code><font color="#368832"><strong>MainWindow.xaml.cs</strong></font></code>的 Window_Loaded 改成可以長成多個的版面（stockItems為一個 List<stockitem> 的全域變數，在 MainWindow structure 中透過上面的 GetAllSections 給值）<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Window_Loaded</span>(<span class="params"><span class="keyword">object</span> sender, RoutedEventArgs e</span>)</span><br><span class="line"></span>&#123;</span><br><span class="line">    Rect workAreaRect = SystemParameters.WorkArea;</span><br><span class="line">    <span class="keyword">this</span>.Left = workAreaRect.Right - ((<span class="number">60</span> * stockItems.Count) + <span class="number">10</span>) - <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">this</span>.Top = workAreaRect.Bottom - <span class="number">40</span> - <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">this</span>.Width = (<span class="number">60</span> * stockItems.Count) + <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; stockItems.Count; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        TextBlock txtCode = <span class="keyword">new</span> TextBlock();</span><br><span class="line">        txtCode.Text = stockItems[i].Code;</span><br><span class="line">        txtCode.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;</span><br><span class="line">        txtCode.TextAlignment = TextAlignment.Center;</span><br><span class="line">        txtCode.FontSize = <span class="number">10</span>;</span><br><span class="line">        txtCode.Width = <span class="number">50</span>;</span><br><span class="line">        txtCode.Height = <span class="number">14</span>;</span><br><span class="line">        txtCode.Name = <span class="string">"txtCode"</span> + stockItems[i].Code;</span><br><span class="line">        txtCode.Margin = <span class="keyword">new</span> Thickness(i * <span class="number">50</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        txtCode.SetValue(Grid.RowProperty, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        TextBlock txtPrice = <span class="keyword">new</span> TextBlock();</span><br><span class="line">        txtPrice.Text = <span class="string">"Wait.."</span>;</span><br><span class="line">        txtPrice.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;</span><br><span class="line">        txtPrice.TextAlignment = TextAlignment.Center;</span><br><span class="line">        txtPrice.FontSize = <span class="number">16</span>;</span><br><span class="line">        txtPrice.Width = <span class="number">50</span>;</span><br><span class="line">        txtPrice.Height = <span class="number">24</span>;</span><br><span class="line">        txtPrice.Name = <span class="string">"txtPrice"</span> + stockItems[i].Code;</span><br><span class="line">        txtPrice.Margin = <span class="keyword">new</span> Thickness(i * <span class="number">50</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        txtPrice.SetValue(Grid.RowProperty, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        gridStocks.Children.Add(txtCode);</span><br><span class="line">        gridStocks.Children.Add(txtPrice);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></stockitem></p>
+<p>接著 MainWindow structure 中讓程式一執行就可以開始即時的一直取得最新成交值<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">MainWindow</span>(<span class="params"></span>)</span><br><span class="line"></span>&#123;</span><br><span class="line">    InitializeComponent();</span><br><span class="line"></span><br><span class="line">    stockItems = GetAllSections();</span><br><span class="line">    <span class="keyword">foreach</span> (StockItem stockItem <span class="keyword">in</span> stockItems)</span><br><span class="line">    &#123;</span><br><span class="line">        BackgroundWorker getStock = <span class="keyword">new</span> BackgroundWorker();</span><br><span class="line">        getStock.DoWork += (s, o) =&gt;</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">double</span> openPrice = StockHelper.GetOpenPrice(stockItem.Code);</span><br><span class="line">            TextBlock txtPrice = <span class="literal">null</span>;</span><br><span class="line">            <span class="comment">// 停止的 Flag （全域變數）</span></span><br><span class="line">            <span class="keyword">while</span> (mGetStockStopFlag)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">try</span></span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">if</span> (txtPrice == <span class="literal">null</span>)</span><br><span class="line">                    &#123;</span><br><span class="line">                        App.Current.Dispatcher.Invoke((Action)<span class="keyword">delegate</span></span><br><span class="line">                        &#123;</span><br><span class="line">                            <span class="comment">// 取得給成交價的 TextBlock 控制項</span></span><br><span class="line">                            txtPrice = FindVisualChildByName&lt;TextBlock&gt;(gridStocks, <span class="string">"txtPrice"</span> + stockItem.Code);</span><br><span class="line">                        &#125;);</span><br><span class="line">                        System.Threading.Thread.Sleep(<span class="number">1000</span>);</span><br><span class="line">                        <span class="keyword">continue</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">else</span></span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="keyword">double</span> quotedMarketPrice = StockHelper.GetQuotedMarketPrice(stockItem.Code);</span><br><span class="line">                        txtPrice.Text = quotedMarketPrice.ToString();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">catch</span></span><br><span class="line">                &#123;</span><br><span class="line"></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        getStock.RunWorkerAsync();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Find Control</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;typeparam name="T"&gt;</span><span class="doctag">&lt;/typeparam&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="parent"&gt;</span>parent control<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="name"&gt;</span>child name<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> T FindVisualChildByName&lt;T&gt;(DependencyObject parent, <span class="keyword">string</span> name) <span class="keyword">where</span> T : DependencyObject</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; VisualTreeHelper.GetChildrenCount(parent); i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> child = VisualTreeHelper.GetChild(parent, i);</span><br><span class="line">        <span class="keyword">string</span> controlName = child.GetValue(Control.NameProperty) <span class="keyword">as</span> <span class="keyword">string</span>;</span><br><span class="line">        <span class="keyword">if</span> (controlName == name)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> child <span class="keyword">as</span> T;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            T result = FindVisualChildByName&lt;T&gt;(child, name);</span><br><span class="line">            <span class="keyword">if</span> (result != <span class="literal">null</span>)</span><br><span class="line">                <span class="keyword">return</span> result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最後程式執行的結果如下<br><img src="/blog/uploads/wpf-stock-monitor/4.jpg" alt=""></p>
+<h2 id="Source-Code"><a href="#Source-Code" class="headerlink" title="Source Code"></a>Source Code</h2><p>代碼包含基本功能外，額外包含</p>
+<ul>
+<li>警報功能</li>
+<li>成交價上色</li>
+</ul>
+<p><a href="https://github.com/Lonka/Stock" target="_blank" rel="external">Download</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><blockquote>
+<p><a href="https://htmlagilitypack.codeplex.com/" target="_blank" rel="external">Html Agility Pack</a><br><a href="https://dotblogs.com.tw/jackbgova/2014/06/10/145471" target="_blank" rel="external">使用HtmlAgilityPack(1) 擷取網頁上的股票</a><br><a href="https://msdn.microsoft.com/zh-tw/library/system.windows.systemparameters.workarea(v=vs.110).aspx" target="_blank" rel="external">SystemParameters.WorkArea 屬性</a><br><a href="http://blog.sina.com.cn/s/blog_7acf472901017onp.html" target="_blank" rel="external">WPF 获取屏幕分辨率（获取最大宽高）</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/WPF/" rel="tag">#WPF</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2016/07/20/article/article-how-to-safely-password/" rel="next" title="Article－如何保護密碼安全">
+                <i class="fa fa-chevron-left"></i> Article－如何保護密碼安全
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2016/07/28/article/article-read-list-201607/" rel="prev" title="Article－閱讀清單（July 2016）">
+                Article－閱讀清單（July 2016） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/blog/uploads/avatar.jpg"
+               alt="Lonka" />
+          <p class="site-author-name" itemprop="name">Lonka</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/blog/archives">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Development"><span class="nav-number">2.</span> <span class="nav-text">Development</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定位於畫面右下角"><span class="nav-number">2.1.</span> <span class="nav-text">定位於畫面右下角</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#即時於Yahoo-Stock抓成交值"><span class="nav-number">2.2.</span> <span class="nav-text">即時於Yahoo Stock抓成交值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#設定多組"><span class="nav-number">2.3.</span> <span class="nav-text">設定多組</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Source-Code"><span class="nav-number">3.</span> <span class="nav-text">Source Code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">4.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lonka</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'lonkaliu';
+      var disqus_identifier = '2016/07/28/wpf/wpf-stock-monitor/';
+      var disqus_title = 'WPF－股票監看';
+      var disqus_url = 'http://lonka.github.io/blog/blog/2016/07/28/wpf/wpf-stock-monitor/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>
