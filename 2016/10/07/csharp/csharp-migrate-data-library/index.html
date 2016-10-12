@@ -1,0 +1,717 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/blog/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/blog/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/blog/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="C#," />
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="長頸鹿程語" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Introduction為了解決兩個資料庫在互轉時可以更靈活而開發的 Library ，雖然市面上早就有很多 DB Management Tool 就有支援，但是不知道可不可以符合我想要的需求，所以就寫了一個包含以下功能的 Library
+
+標準化的轉資料函式，透過 INI 設定檔可互轉
+可以支援 Oracle,MSSQL 互轉（可擴充）
+可以支援互轉中途 Plug In 處理其它事
+支援時區設定">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C#－轉資料開發">
+<meta property="og:url" content="http://lonka.github.io/blog/2016/10/07/csharp/csharp-migrate-data-library/index.html">
+<meta property="og:site_name" content="長頸鹿程語">
+<meta property="og:description" content="Introduction為了解決兩個資料庫在互轉時可以更靈活而開發的 Library ，雖然市面上早就有很多 DB Management Tool 就有支援，但是不知道可不可以符合我想要的需求，所以就寫了一個包含以下功能的 Library
+
+標準化的轉資料函式，透過 INI 設定檔可互轉
+可以支援 Oracle,MSSQL 互轉（可擴充）
+可以支援互轉中途 Plug In 處理其它事
+支援時區設定">
+<meta property="og:image" content="http://lonka.github.io/blog/blog/uploads/csharp-migrate-data-library/Class Diagram.png">
+<meta property="og:image" content="http://lonka.github.io/blog/blog/uploads/csharp-migrate-data-library/DoTast Activity Diagram.png">
+<meta property="og:image" content="http://lonka.github.io/blog/blog/uploads/csharp-migrate-data-library/DoMigrate Activity Diagram.png">
+<meta property="og:image" content="http://lonka.github.io/blog/blog/uploads/csharp-migrate-data-library/5.jpg">
+<meta property="og:image" content="http://lonka.github.io/blog/blog/uploads/csharp-migrate-data-library/6.jpg">
+<meta property="og:image" content="http://lonka.github.io/blog/blog/uploads/csharp-migrate-data-library/7.jpg">
+<meta property="og:image" content="http://lonka.github.io/blog/blog/uploads/csharp-migrate-data-library/8.jpg">
+<meta property="og:image" content="http://lonka.github.io/blog/blog/uploads/csharp-migrate-data-library/1.jpg">
+<meta property="og:image" content="http://lonka.github.io/blog/blog/uploads/csharp-migrate-data-library/2.jpg">
+<meta property="og:image" content="http://lonka.github.io/blog/blog/uploads/csharp-migrate-data-library/3.jpg">
+<meta property="og:image" content="http://lonka.github.io/blog/blog/uploads/csharp-migrate-data-library/4.jpg">
+<meta property="og:updated_time" content="2016-10-12T09:21:00.642Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C#－轉資料開發">
+<meta name="twitter:description" content="Introduction為了解決兩個資料庫在互轉時可以更靈活而開發的 Library ，雖然市面上早就有很多 DB Management Tool 就有支援，但是不知道可不可以符合我想要的需求，所以就寫了一個包含以下功能的 Library
+
+標準化的轉資料函式，透過 INI 設定檔可互轉
+可以支援 Oracle,MSSQL 互轉（可擴充）
+可以支援互轉中途 Plug In 處理其它事
+支援時區設定">
+<meta name="twitter:image" content="http://lonka.github.io/blog/blog/uploads/csharp-migrate-data-library/Class Diagram.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> C#－轉資料開發 | 長頸鹿程語 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-hk">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-83560513-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/blog/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">長頸鹿程語</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                C#－轉資料開發
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2016-10-07T17:14:11+08:00" content="2016-10-07">
+              2016-10-07
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/blog/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C#</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/blog/2016/10/07/csharp/csharp-migrate-data-library/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/10/07/csharp/csharp-migrate-data-library/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>為了解決兩個資料庫在互轉時可以更靈活而開發的 Library ，雖然市面上早就有很多 DB Management Tool 就有支援，但是不知道可不可以符合我想要的需求，所以就寫了一個包含以下功能的 Library</p>
+<ol>
+<li>標準化的轉資料函式，透過 INI 設定檔可互轉</li>
+<li>可以支援 Oracle,MSSQL 互轉（可擴充）</li>
+<li>可以支援互轉中途 Plug In 處理其它事</li>
+<li>支援時區設定</li>
+<li>失敗可以支援重傳（三次）</li>
+<li>可支援下列四種型態互轉<ul>
+<li>批次</li>
+<li>同步</li>
+<li>復製</li>
+<li>更新</li>
+</ul>
+</li>
+</ol>
+<h2 id="Development"><a href="#Development" class="headerlink" title="Development"></a>Development</h2><h3 id="架構"><a href="#架構" class="headerlink" title="架構"></a>架構</h3><p>整個 Library 分三個部份</p>
+<ol>
+<li>MigrateDataLib（主體）</li>
+<li>MigrateDataModel（介接PlugIn的Interface）</li>
+<li>PlugInProject（PlugIn所開發的專案）</li>
+</ol>
+<p>Class Diagram 如下圖所示<br><img src="/blog/uploads/csharp-migrate-data-library/Class Diagram.png" alt=""></p>
+<p>程式的進入點為 MigrateData - DoTask 其 Activity Diagram 如下圖所示<br><img src="/blog/uploads/csharp-migrate-data-library/DoTast Activity Diagram.png" alt=""></p>
+<p>每種 Task 的 DoMigrate Activity Diagram 如下圖所示<br><img src="/blog/uploads/csharp-migrate-data-library/DoMigrate Activity Diagram.png" alt=""></p>
+<h3 id="基本設定"><a href="#基本設定" class="headerlink" title="基本設定"></a>基本設定</h3><ul>
+<li><p>基本</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[Migrate Setting]</span><br><span class="line">'時區[Default:0]</span><br><span class="line">timeZone=</span><br><span class="line">'dll放置的資料夾[Default:Empty]</span><br><span class="line">folder=</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>來源資料庫</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[Source Database]</span><br><span class="line">'資料庫類型[Contain:SqlServer][Default:SqlServer]</span><br><span class="line">type=</span><br><span class="line">'連線字串，啟動後加密[Default:Empty]</span><br><span class="line">connectionString=</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>目標資料庫</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[Target Database]</span><br><span class="line">'資料庫類型[Contain:SqlServer][Default:SqlServer]</span><br><span class="line">type=</span><br><span class="line">'連線字串，啟動後加密[Default:Empty]</span><br><span class="line">connectionString=</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Log</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[Log Setting]</span><br><span class="line">'每次log的最大字元數(byte)[Default:200]</span><br><span class="line">retentionDay=</span><br><span class="line">'過期刪除的天數[Default:30]</span><br><span class="line">maxLogSize=</span><br><span class="line">'存放路徑[Default:.\LogFiles]</span><br><span class="line">path=</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="批次轉檔"><a href="#批次轉檔" class="headerlink" title="批次轉檔"></a>批次轉檔</h3><p>依照所設定的標記欄位依序往後轉檔，流程如下所示<br><img src="/blog/uploads/csharp-migrate-data-library/5.jpg" alt=""></p>
+<p>設定說明如下<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">* : 一定要設定</span><br><span class="line">- : 不一定要設定</span><br><span class="line">' : 不用設定</span><br><span class="line"></span><br><span class="line">[Migrate Task Batch]</span><br><span class="line">* taskType=Batch</span><br><span class="line">* sourceTable=來源表名</span><br><span class="line">* targetTable=目標表名</span><br><span class="line">* checkField=確認目前轉到那的標記欄位</span><br><span class="line">- checkType=確認標記欄位的型態（如果是日期就不用輸入）</span><br><span class="line">- checkBeginValue=確認標記欄位的起始值（沒有起始的話就不用設）</span><br><span class="line">- checkEqual=比對時是否要等於前次最後的值（大於的話就不用設）</span><br><span class="line">'  syncField=（不用設定）</span><br><span class="line">- condition=來源表是否需要條件設定（沒有的話就不用設）</span><br><span class="line">- extraField=來源表是否需要額外欄位（沒有的話就不用設）</span><br><span class="line">- plugIn=是否需要額外處理（沒有的話就不用設）</span><br><span class="line"></span><br><span class="line">欄位設定</span><br><span class="line">TargetField=SourceField</span><br></pre></td></tr></table></figure></p>
+<p>上圖的設定範例<br><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[Migrate Task Batch]</span></span><br><span class="line"><span class="attr">taskType</span>=Batch</span><br><span class="line"><span class="attr">sourceTable</span>=STable</span><br><span class="line"><span class="attr">targetTable</span>=TTable</span><br><span class="line"><span class="attr">checkField</span>=BEGIN_DATE</span><br><span class="line"><span class="attr">checkType</span>=</span><br><span class="line"><span class="attr">checkBeginValue</span>=</span><br><span class="line"><span class="attr">checkEqual</span>=</span><br><span class="line"><span class="attr">syncField</span>=</span><br><span class="line"><span class="attr">condition</span>=</span><br><span class="line"><span class="attr">extraField</span>=</span><br><span class="line"><span class="attr">plugIn</span>=</span><br><span class="line"></span><br><span class="line"><span class="attr">ID</span>=ID</span><br><span class="line"><span class="attr">CODE</span>=CODE</span><br><span class="line"><span class="attr">BEGIN_DATE</span>=BEGIN_DATE</span><br></pre></td></tr></table></figure></p>
+<h3 id="同步轉檔"><a href="#同步轉檔" class="headerlink" title="同步轉檔"></a>同步轉檔</h3><p>依照所設定的同步欄位同步兩表，流程如下所示</p>
+<ul>
+<li>存在→更新</li>
+<li>不存在→新增</li>
+<li>額外→刪除</li>
+</ul>
+<p><img src="/blog/uploads/csharp-migrate-data-library/6.jpg" alt=""><br>設定說明如下<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">* : 一定要設定</span><br><span class="line">- : 不一定要設定</span><br><span class="line">' : 不用設定</span><br><span class="line"></span><br><span class="line">[Migrate Task Sync]</span><br><span class="line">* taskType=Sync</span><br><span class="line">* sourceTable=來源表名</span><br><span class="line">* targetTable=目標表名</span><br><span class="line">- checkField=非整表同步時的條件欄位（整表時就不用設定）</span><br><span class="line">- checkType=條件欄位型態（整表時就不用設定）</span><br><span class="line">- checkBeginValue=條件欄位的起始值（整表時就不用設定）</span><br><span class="line">- checkEqual=條件欄位是否要等於（整表時就不用設定）</span><br><span class="line">* syncField=同步時用來確認的欄位</span><br><span class="line">- condition=來源表是否需要條件設定（沒有的話就不用設）</span><br><span class="line">- extraField=來源表是否需要額外欄位（沒有的話就不用設）</span><br><span class="line">- plugIn=是否需要額外處理（沒有的話就不用設）</span><br><span class="line"></span><br><span class="line">欄位設定</span><br><span class="line">TargetField=SourceField</span><br></pre></td></tr></table></figure></p>
+<p>上圖的設定範例<br><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[Migrate Task Sync]</span></span><br><span class="line"><span class="attr">taskType</span>=Sync</span><br><span class="line"><span class="attr">sourceTable</span>=STable</span><br><span class="line"><span class="attr">targetTable</span>=TTable</span><br><span class="line"><span class="attr">checkField</span>=</span><br><span class="line"><span class="attr">checkType</span>=</span><br><span class="line"><span class="attr">checkBeginValue</span>=</span><br><span class="line"><span class="attr">checkEqual</span>=</span><br><span class="line"><span class="attr">syncField</span>=ID</span><br><span class="line"><span class="attr">condition</span>=</span><br><span class="line"><span class="attr">extraField</span>=</span><br><span class="line"><span class="attr">plugIn</span>=</span><br><span class="line"></span><br><span class="line"><span class="attr">ID</span>=ID</span><br><span class="line"><span class="attr">CODE</span>=CODE</span><br><span class="line"><span class="attr">BEGIN_DATE</span>=BEGIN_DATE</span><br></pre></td></tr></table></figure></p>
+<h3 id="復製轉檔"><a href="#復製轉檔" class="headerlink" title="復製轉檔"></a>復製轉檔</h3><p>直接刪除原表再整表轉入<br><img src="/blog/uploads/csharp-migrate-data-library/7.jpg" alt=""></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">* : 一定要設定</span><br><span class="line">- : 不一定要設定</span><br><span class="line">' : 不用設定</span><br><span class="line"></span><br><span class="line">[Migrate Task Copy]</span><br><span class="line">* taskType=Copy</span><br><span class="line">* sourceTable=來源表名</span><br><span class="line">* targetTable=目標表名</span><br><span class="line">- checkField=非整表Copy時的條件欄位（整表時就不用設定）</span><br><span class="line">- checkType=條件欄位型態（整表時就不用設定）</span><br><span class="line">- checkBeginValue=條件欄位的起始值（整表時就不用設定）</span><br><span class="line">- checkEqual=條件欄位是否要等於（整表時就不用設定）</span><br><span class="line">' syncField=（不用設定）</span><br><span class="line">- condition=來源表是否需要條件設定（沒有的話就不用設）</span><br><span class="line">- extraField=來源表是否需要額外欄位（沒有的話就不用設）</span><br><span class="line">- plugIn=是否需要額外處理（沒有的話就不用設）</span><br><span class="line"></span><br><span class="line">欄位設定</span><br><span class="line">TargetField=SourceField</span><br></pre></td></tr></table></figure>
+<p>上圖的設定範例<br><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[Migrate Task Copy]</span></span><br><span class="line"><span class="attr">taskType</span>=Copy</span><br><span class="line"><span class="attr">sourceTable</span>=STable</span><br><span class="line"><span class="attr">targetTable</span>=TTable</span><br><span class="line"><span class="attr">checkField</span>=</span><br><span class="line"><span class="attr">checkType</span>=</span><br><span class="line"><span class="attr">checkBeginValue</span>=</span><br><span class="line"><span class="attr">checkEqual</span>=</span><br><span class="line"><span class="attr">syncField</span>=</span><br><span class="line"><span class="attr">condition</span>=</span><br><span class="line"><span class="attr">extraField</span>=</span><br><span class="line"><span class="attr">plugIn</span>=</span><br><span class="line"></span><br><span class="line"><span class="attr">ID</span>=ID</span><br><span class="line"><span class="attr">CODE</span>=CODE</span><br><span class="line"><span class="attr">BEGIN_DATE</span>=BEGIN_DATE</span><br></pre></td></tr></table></figure></p>
+<h3 id="更新轉檔"><a href="#更新轉檔" class="headerlink" title="更新轉檔"></a>更新轉檔</h3><p>依照設定的標記欄位更新所設定的欄位<br><img src="/blog/uploads/csharp-migrate-data-library/8.jpg" alt=""><br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">* : 一定要設定</span><br><span class="line">- : 不一定要設定</span><br><span class="line">' : 不用設定</span><br><span class="line"></span><br><span class="line">[Migrate Task Update]</span><br><span class="line">* taskType=Update</span><br><span class="line">* sourceTable=來源表名</span><br><span class="line">* targetTable=目標表名</span><br><span class="line">* checkField=確認目前更新到那的標記欄位</span><br><span class="line">- checkType=確認標記欄位的型態（如果是日期就不用輸入）</span><br><span class="line">- checkBeginValue=確認標記欄位的起始值（沒有起始的話就不用設）</span><br><span class="line">- checkEqual=比對時是否要等於前次最後的值（大於的話就不用設）</span><br><span class="line">* syncField=更新時的條件欄位（下方的Field必需設定該欄位）</span><br><span class="line">- condition=來源表是否需要條件設定（沒有的話就不用設）</span><br><span class="line">- extraField=來源表是否需要額外欄位（沒有的話就不用設）</span><br><span class="line">- plugIn=是否需要額外處理（沒有的話就不用設）</span><br><span class="line"></span><br><span class="line">* Where Field</span><br><span class="line">TargetField=SourceField</span><br><span class="line"></span><br><span class="line">* Update Field</span><br><span class="line">TargetField=SourceField</span><br></pre></td></tr></table></figure></p>
+<p>上圖的設定範例<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[Migrate Task Update]</span><br><span class="line">taskType=Update</span><br><span class="line">sourceTable=STable</span><br><span class="line">targetTable=TTable</span><br><span class="line">checkField=BEGIN_DATE</span><br><span class="line">checkType=</span><br><span class="line">checkBeginValue=</span><br><span class="line">checkEqual=</span><br><span class="line">syncField=ID</span><br><span class="line">condition=</span><br><span class="line">extraField=</span><br><span class="line">plugIn=</span><br><span class="line"></span><br><span class="line">'Where Field</span><br><span class="line">ID=ID</span><br><span class="line"></span><br><span class="line">'Update Field</span><br><span class="line">CODE=CODE</span><br><span class="line">BEGIN_DATE=BEGIN_DATE</span><br></pre></td></tr></table></figure></p>
+<h3 id="PlugIn"><a href="#PlugIn" class="headerlink" title="PlugIn"></a>PlugIn</h3><p>可以透過 INI 設定，讓每個 Task 設定多個 PlugIn<br><img src="/blog/uploads/csharp-migrate-data-library/1.jpg" alt=""><br>PlugIn 處理過的值會依序帶到下一個 PlugIn ，且在轉資料的前及後都會觸發一個事件，以 Etl PlugIn 為例如下圖，把來源資料的 BOM_NAME 轉為 BOM_ID ，就可以透過 BeforeMigrate 把來源的資料轉置。<br><img src="/blog/uploads/csharp-migrate-data-library/2.jpg" alt=""></p>
+<h3 id="時區"><a href="#時區" class="headerlink" title="時區"></a>時區</h3><p>透過 INI 設定目前時區<br><img src="/blog/uploads/csharp-migrate-data-library/3.jpg" alt=""><br>有掛入 Etl PlugIn 的 Task 都會自動把所有的時間轉成 UTC 的時間<br><img src="/blog/uploads/csharp-migrate-data-library/4.jpg" alt=""></p>
+<h2 id="Source-Code"><a href="#Source-Code" class="headerlink" title="Source Code"></a>Source Code</h2><p><a href="https://github.com/Lonka/MigrateData" target="_blank" rel="external">Download</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><blockquote>
+<p><a href="http://www.oracle.com/technetwork/database/migration/index.html" target="_blank" rel="external">Oracle Migrations</a><br><a href="http://fishcodelib.com/DBMigration.htm" target="_blank" rel="external">dbMigration .NET</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/C/" rel="tag">#C#</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2016/10/03/concept/concept-mes/" rel="next" title="概念－MES系統">
+                <i class="fa fa-chevron-left"></i> 概念－MES系統
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/blog/uploads/avatar.jpg"
+               alt="Lonka" />
+          <p class="site-author-name" itemprop="name">Lonka</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/blog/archives">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Development"><span class="nav-number">2.</span> <span class="nav-text">Development</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#架構"><span class="nav-number">2.1.</span> <span class="nav-text">架構</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本設定"><span class="nav-number">2.2.</span> <span class="nav-text">基本設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#批次轉檔"><span class="nav-number">2.3.</span> <span class="nav-text">批次轉檔</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同步轉檔"><span class="nav-number">2.4.</span> <span class="nav-text">同步轉檔</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#復製轉檔"><span class="nav-number">2.5.</span> <span class="nav-text">復製轉檔</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新轉檔"><span class="nav-number">2.6.</span> <span class="nav-text">更新轉檔</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PlugIn"><span class="nav-number">2.7.</span> <span class="nav-text">PlugIn</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#時區"><span class="nav-number">2.8.</span> <span class="nav-text">時區</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Source-Code"><span class="nav-number">3.</span> <span class="nav-text">Source Code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">4.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lonka</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'lonkaliu';
+      var disqus_identifier = '2016/10/07/csharp/csharp-migrate-data-library/';
+      var disqus_title = 'C#－轉資料開發';
+      var disqus_url = 'http://lonka.github.io/blog/blog/2016/10/07/csharp/csharp-migrate-data-library/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>
